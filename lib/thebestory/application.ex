@@ -1,7 +1,6 @@
 defmodule TheBestory.Application do
-  @moduledoc """
-  The Bestory Application Service.
-  """
+  @moduledoc false
+
   use Application
 
   def start(_type, _args) do

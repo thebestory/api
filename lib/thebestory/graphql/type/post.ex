@@ -31,6 +31,9 @@ defmodule TheBestory.GraphQL.Type.Post do
     @desc "Number of post's likes."
     field :likes_count, :integer
 
+    @desc "A flag indicating current authorized user liked this post."
+    field :is_liked, :boolean
+
     @desc "A flag indicating the post is published."
     field :is_published, :boolean
 
@@ -60,13 +63,28 @@ defmodule TheBestory.GraphQL.Type.Post do
       @desc "Number of topics in the list."
       arg :limit, :integer, default_value: 100
 
-      resolve assoc(:topics, fn query, args, info ->
-        Resolver.Topic.list(query, args, info)
-      end)
+      resolve fn args, info ->
+        import Ecto.Query
+        alias TheBestory.Repo
+        alias TheBestory.Repo.Schema.{PostTopic, Topic}
+  
+        {:ok, Resolver.Topic.list(Topic, args, info)
+              |> join(:inner, [t], pt in PostTopic)
+              |> where([t, pt], pt.topic_id == t.id)
+              |> where([t, pt], pt.post_id == ^info.source.id)
+              |> where([t, pt], pt.is_deleted == false)
+              |> order_by([t, pt], desc: pt.assigned_at, desc: pt.topic_id)
+              |> Repo.all}
+      end
     end
 
     @desc "List of users liked the post."
-    field :likes, list_of(:like), resolve: assoc(:likes)
+    field :likes, list_of(:like), resolve: assoc(:likes, fn query, _root, _ctx ->
+      import Ecto.Query
+      query
+      |> where([l], l.is_unliked == false)
+      |> order_by([l], desc: l.liked_at, desc: l.user_id)
+    end)
 
     @desc "List of post's replies."
     field :replies, list_of(:post) do
@@ -85,9 +103,9 @@ defmodule TheBestory.GraphQL.Type.Post do
       @desc "Number of replies in the list."
       arg :limit, :integer, default_value: 100
 
-      resolve assoc(:replies, fn query, args, info ->
-        Resolver.Post.list(query, args, info)
-      end)
+      resolve fn args, info ->
+        Resolver.Post.list(Map.put(args, :parents, [info.source.id]), info)
+      end
     end
   end
 

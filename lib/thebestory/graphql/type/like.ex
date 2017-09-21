@@ -14,13 +14,13 @@ defmodule TheBestory.GraphQL.Type.Like do
     @desc "The post that liked."
     field :post, :post, resolve: assoc(:post)
 
-    @desc "A flag indicating the like is deleted."
-    field :is_deleted, :boolean
-
     @desc "Date and time when post was liked."
-    field :submitted_at, :datetime
+    field :liked_at, :datetime
+
+    @desc "A flag indicating the like is deleted."
+    field :is_unliked, :boolean
 
     @desc "Date and time when like was deleted (or null otherwise)."
-    field :deleted_at, :datetime
+    field :unliked_at, :datetime
   end
 end

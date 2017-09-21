@@ -1,15 +1,10 @@
-defmodule TheBestory.Ecto.Type.SnowflakeTest do
+defmodule TheBestory.Repo.Type.SnowflakeTest do
   @moduledoc false
 
   use ExUnit.Case, async: true
 
   alias Snowflake, as: SnowflakeServer
-  alias TheBestory.Ecto.Type.Snowflake, as: SnowflakeType
-
-  test "Snowflake.generate/0 works" do
-    {:ok, id} = SnowflakeType.generate()
-    assert is_integer(id)
-  end
+  alias TheBestory.Repo.Type.Snowflake, as: SnowflakeType
 
   test "Snowflake.autogenerate/0 works" do
     id = SnowflakeType.autogenerate()

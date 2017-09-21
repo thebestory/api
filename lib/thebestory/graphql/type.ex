@@ -7,6 +7,7 @@ defmodule TheBestory.GraphQL.Type do
 
   import_types Type.Like
   import_types Type.Post
+  import_types Type.Session
   import_types Type.Topic
   import_types Type.User
 end

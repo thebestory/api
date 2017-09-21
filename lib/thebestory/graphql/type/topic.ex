@@ -1,7 +1,6 @@
 defmodule TheBestory.GraphQL.Type.Topic do
   @moduledoc false
 
-  use Absinthe.Ecto, repo: TheBestory.Repo
   use Absinthe.Schema.Notation
 
   alias TheBestory.GraphQL.Resolver
@@ -33,6 +32,9 @@ defmodule TheBestory.GraphQL.Type.Topic do
       @desc "Listing type of the posts."
       arg :type, :post_listing_type, default_value: :latest
 
+      @desc "Snowflake IDs of parents of posts."
+      arg :parents, list_of(non_null(:snowflake))
+
       @desc "Snowflake IDs of authors of posts."
       arg :authors, list_of(non_null(:snowflake))
 
@@ -45,9 +47,9 @@ defmodule TheBestory.GraphQL.Type.Topic do
       @desc "Number of posts in the list."
       arg :limit, :integer, default_value: 100
 
-      resolve assoc(:posts, fn query, args, info ->
-        Resolver.Post.list(query, args, info)
-      end)
+      resolve fn args, info ->
+        Resolver.Post.list(Map.put(args, :topics, [info.source.id]), info)
+      end
     end
   end
 end

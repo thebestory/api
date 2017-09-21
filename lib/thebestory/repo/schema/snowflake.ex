@@ -1,9 +1,9 @@
-defmodule TheBestory.Ecto.Schema.Snowflake do
+defmodule TheBestory.Repo.Schema.Snowflake do
   @moduledoc false
 
-  use TheBestory.Ecto.Schema
+  use TheBestory.Repo.Schema
 
-  alias TheBestory.Ecto.Schema.{Snowflake}
+  alias TheBestory.Repo.Schema.{Snowflake}
 
   schema "snowflakes" do
     field :type, :string
@@ -16,6 +16,6 @@ defmodule TheBestory.Ecto.Schema.Snowflake do
     changeset
     |> cast(attrs, [:id, :type])
     |> validate_required([:id, :type])
-    |> validate_length(:content, min: 1, max: 32)
+    |> validate_length(:type, min: 1, max: 32)
   end
 end

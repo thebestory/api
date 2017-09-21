@@ -46,6 +46,10 @@ config :snowflake,
 config :thebestory, TheBestory.Endpoint,
   port: 4000
 
+config :thebestory, TheBestory.Util.JWT,
+  issuer: "The Bestory Project",
+  secret_key: "itislonglongsecretkeythatshouldbechangedtotheactualreallylonglongsecretkey"
+
 # Elixir's Logger configuration
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -1,10 +1,10 @@
-defmodule Thebestory.Mixfile do
+defmodule TheBestory.Mixfile do
   use Mix.Project
 
   def project do
     [
       app: :thebestory,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env),
       start_permanent: Mix.env == :prod,
@@ -38,6 +38,8 @@ defmodule Thebestory.Mixfile do
       {:snowflake, "~> 1.0.0"},
       {:timex, "~> 3.1"},
       {:timex_ecto, "~> 3.1"},
+      {:jose, "~> 1.8"},
+      {:joken, "~> 1.5"},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
       {:absinthe, "~> 1.3.0"},
@@ -46,7 +48,7 @@ defmodule Thebestory.Mixfile do
       {:plug, "~> 1.4.3"},
       {:cowboy, "~> 1.1"},
       {:poison, "~> 3.1"},
-      {:absinthe_plug, "~> 1.3.0"},
+      {:absinthe_plug, "~> 1.3.0"}
     ]
   end
 

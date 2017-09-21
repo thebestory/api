@@ -1,9 +1,9 @@
-defmodule TheBestory.Ecto.Schema.Topic do
+defmodule TheBestory.Repo.Schema.Topic do
   @moduledoc false
 
-  use TheBestory.Ecto.Schema
+  use TheBestory.Repo.Schema
 
-  alias TheBestory.Ecto.Schema.{Post, Topic}
+  alias TheBestory.Repo.Schema.{Post, PostTopic, Topic}
 
   schema "topics" do
     field :title,       :string
@@ -14,7 +14,7 @@ defmodule TheBestory.Ecto.Schema.Topic do
 
     field :is_public,   :boolean, default: false
 
-    many_to_many :posts, Post, join_through: "posts_topics"
+    many_to_many :posts, Post, join_through: PostTopic
   end
 
   def changeset(struct, attrs \\ %{})
@@ -27,5 +27,6 @@ defmodule TheBestory.Ecto.Schema.Topic do
     |> validate_length(:title, min: 1, max: 64)
     |> validate_length(:slug, min: 1, max: 32)
     |> validate_length(:description, max: 2048)
+    |> unique_constraint(:slug, name: :topics_slug_uindex)
   end
 end

@@ -20,6 +20,8 @@ defmodule TheBestory.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
 
+  plug TheBestory.Plug.Authorization
+
   plug :dispatch
 
   forward "/graphql", to: Absinthe.Plug,
